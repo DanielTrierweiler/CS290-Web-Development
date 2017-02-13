@@ -1,0 +1,39 @@
+﻿table, td, th{
+  border-style:groove;
+}
+
+tfoot th, tbody th{
+  font-weight:normal;
+}
+
+fieldset fieldset{
+  margin-top:5px;
+}
+
+input[type="radio"]{
+  margin: 10px 0 10px 0;
+}
+
+tbody tr:nth-of-type(2n){
+  background-color:lightgreen; 
+}
+
+tbody tr:nth-of-type(2n + 1){
+  background-color:lightcoral; 
+}
+
+.outer-content{
+  width:75%;
+  height:40px;
+  padding-top:20px;
+  background-color:pink
+}
+
+.inner-content{
+  width:75%;
+  margin:0 auto;
+  text-align:center;
+  background-color:lightblue;
+}
+
+
