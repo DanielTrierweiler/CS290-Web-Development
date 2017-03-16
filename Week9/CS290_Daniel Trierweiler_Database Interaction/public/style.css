@@ -1,0 +1,21 @@
+#form {
+  width: 40%;
+  margin: 0 auto;
+}
+
+table {
+  width: 75%;
+  margin: 0 auto;
+  margin-top: 20px;
+}
+
+div {
+  margin-top: 20px;
+}
+
+div > input, td > input {
+  display: block;
+  margin: 0 auto;
+}
+
+

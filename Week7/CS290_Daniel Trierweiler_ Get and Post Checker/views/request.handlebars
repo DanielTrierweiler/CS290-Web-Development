@@ -1,0 +1,16 @@
+<h1>{{requestType}} Request Received</h1>
+<table style="width: 100%">
+  <tbody>
+    <tr>
+      <th> Name  </th>
+      <th> Value </th>
+    </tr>
+   
+    {{#each dataList}}
+      <tr>
+        <td>{{this.name}}</td>
+        <td>{{this.value}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

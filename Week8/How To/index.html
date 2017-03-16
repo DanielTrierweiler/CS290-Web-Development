@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>CS290 How-To-Guide</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>    
+  <script src="script.js"></script>    
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body> 
+<div id="navContainer">
+  <div id="title">
+    <h1>How-To-Guide: Yelp Fusion API</h1>
+  </div>
+  <div id="tabs">
+    <ul>
+      <li><a href="#Intro">Intro</a></li>
+      <li><a href="#Start">Start</a></li>
+      <li><a href="#Install">Install</a></li>
+      <li><a href="#Token">Token</a></li>
+      <li><a href="#Code">Code</a></li>
+      <li><a href="#Result">Results</a></li>    
+    </ul>
+  </div>
+</div>
+
+<div id="bodyContainer">
+<div class="section">
+  <h2><a class = "anchor" id = "Intro">Yelp Fusion API</a></h2>
+  <p> 
+    Yelp is a social networking site where users leave ratings for businesses that provide all sorts of services. Created in 2004, Yelp has become one of the most popular social networking platforms for customers and businesses. This How-To-Guide will teach you how to interact with the <a href = "https://www.yelp.com/developers" target="_blank">Yelp Fusion API</a> using Node.js.
+  </p>    
+</div>
+<div class="section">
+  <h2><a class = "anchor" id = "Start">Getting Started with the API</a></h2>
+  <p>
+   To start you will need to create a Yelp acount, if you do not have one. Then follow these <a href = "https://www.yelp.com/developers/v3/manage_app" target="_blank"> instructions </a> to create an App. After completing these steps you will be given an app ID and secret, which are needed to obtain an access token. This token will allow us access Yelp API's. 
+   <div>
+     <img src="How%20To%20Pics/app.PNG">
+  </div> 
+  <p>    
+   Yelp replaces your app secret with asterisks, and that it is for a good reason. If someone were to obtain your app secret, then they could potentially access your token. Please keep your app secret a secret (pun intended). That completes this part of the guide. Next we will be installing some tools for Node.js.
+  </p>
+</div>
+
+<div class="section">
+  <h2><a class = "anchor" id = "Install">Install Node.js and Middleware</a></h2>
+  <p>
+      Yelp API's does not support <a href = "https://www.maxcdn.com/one/visual-glossary/cors/" target="_blank">CORS</a>, which essentially means we cannot gain access from a browser (client-side). To access API's we will be using <a href = " https://www.tutorialspoint.com/nodejs/nodejs_introduction.htm" target="_blank">Node.js</a> which is a server-side platform. To install Node.js open your terminal and head to the directory you will be working in, and once you are in the desired directory type <code>npm install</code> in the terminal to install it.
+  </p>
+  <div>
+    <img src="How%20To%20Pics/install%20node.PNG">
+  </div>
+  <p>
+      We will be making use of Node.js middlewares express and request, which we will use to simplify the process for creating servers and sending requests respectively. To install express type <code>npm install express</code> in your terminal. 
+  </p>
+  <div>
+    <img src="How%20To%20Pics/install%20express.PNG"
+  </div> 
+  <p>
+    To install request, you probably guessed correctly, type <code>npm install request</code> in the terminal. If you recieved any warnings during installation, you may disregard them. That wraps up all the tools we need. Now we are ready to get our access token!
+  </p> 
+</div>
+
+<div class="section">
+  <h2><a class = "anchor" id = "Token" >Yelp Access Token</a></h2>   
+  <p>
+    According to Yelp's API <a href = "https://www.yelp.com/developers/documentation/v3/get_started" target="_blank">documention</a> we will make a POST request, with our app ID and secret in the body of the request, to the following url <code>https://api.yelp.com/oauth2/token</code>. The format of the request needs to be <code>x-www-form-urlencoded</code> in order to recieve a JSON object that contains our access token. Below is code I have written in VIM (you can use any editor of your choosing) to accomplish this task.
+  </p>
+  <div>
+    <img src="How%20To%20Pics/get%20access%20token.PNG">
+  </div>
+  <p>
+    Let me break it down for you. First we make use of node's request middleware with the following code <code>var request = require("request")</code>. We then set our app ID and secret to the following variables <code> var appId</code> and <code>var appSecret</code>. Next all request parameters have been defined in <code>var options</code>, which is sent with the request. After making the request, we will recieve the JSON object as a string. Below is Yelp's specifications regarding the JSON object. 
+  </p>
+  <div>
+    <img src="How%20To%20Pics/yelp%20JSON.PNG">
+  </div>
+  <p>      
+    To access the property which contains the access token we need to parse the object and access the <code>access_token</code> property. To make sure we have correctly recieved the token it is then printed to the console. Make sure to keep this information private, and do not share your access token!   
+  </p>
+  <p>
+    According to Yelp's specifications we will need to send authorization that includes our access token when trying to access an API. Regarding that authorization, there is a minor detail that can be easily missed in the yelp documentation, and that is your authorization is your <code>token type + access token</code>. Below is a description from Yelp on the matter.  
+  </p>
+  <div>
+    <img src="How%20To%20Pics/authorization.PNG">
+  </div>
+  <p>
+    Therefore it is suffice to say that the necessary authorization is <code>"Bearer " + Your Access Token</code>, since token_type with always return <code>Bearer</code>. Now that we have the proper authorization we are nearly ready to start making requests. 
+  </p>
+</div>
+
+<div class="section">
+  <h2><a id = "Code">Coding for a Request</a></h2>
+  <p>
+    Yelp has <a href = "https://www.yelp.com/developers/documentation/v3" target="_blank">several API's</a>, six in total, however, how they all connect is somewhat convoluted. The API's <a href = "https://www.yelp.com/developers/documentation/v3/business_search" target="_blank"> Yelp Search </a>, <a href = "https://www.yelp.com/developers/documentation/v3/business_search_phone" target="_blank"> Yelp Phone Search </a>, and <a href = "https://www.yelp.com/developers/documentation/v3/transactions_search" target="_blank"> Yelp Transaction Search </a> return business information based on a variety of parameters (i.e. terms such as food, coffee, etc, or the distance from your location, ect), a phone number, and the transactions the business supports (i.e. food delivery) respectively. You can look at each API's documentation for more information. What is really important that these API's return business ID's in their responses which the API's <a href = "https://www.yelp.com/developers/documentation/v3/business" target="_blank"> Yelp Business </a>, and <a href = "https://www.yelp.com/developers/documentation/v3/business_reviews" target="_blank"> Yelp Review </a> depend on. The last API is <a href = "https://www.yelp.com/developers/documentation/v3/autocomplete" target="_blank"> Yelp Autocomplete </a>, which returns suggestions based on a user's input.       
+  </p>
+  <p>
+    As far as I could tell there is no way to know a business ID without knowing it prior hand, or, by making a request to a Yelp API that will return business ID's. With that in mind we'll be utilizing the Yelp Search API, since I have no knowledge of any business ID's. According to the API's documentation we'll need to make a GET Request passing API parameters in a query string along with our authorization. Below is code I have written to accomplish this task.        
+  </p>    
+  <div>
+    <img src="How%20To%20Pics/request.PNG">
+  </div>
+  <p>
+    This code looks a lot different then before, so let me walk you threw it. After requiring all the middlware in the program, the server is created by initiating express <code>var app = express()</code>, and its port is set to 9900. Yelp's Search API recieves GET requests, and the code <code>app.get</code> ensures that our server will resond to those type of requests. Now inside this function we make a request to obtain the access token, nothing new here, however, once we recieve the access token we make a call to the <code>function search(accessToken, req, res)</code> passing along the original request and response our server recieved. In this function we make a Get request to the Yelp seach API, and return itsresponse. The last bit of code <code>app.listen</code> tells the server to listen for requests on the port it was assigned too.     
+  </p>    
+  <p>
+    Well hopefully not all of that was too bad, but you might be wondering why I am calling the request to the Yelp Search API from within the request to obtain the access token. The answer is that Node is asynchronous, which means that two or more events can exist or happen at the same time. If I were to make a GET request to a Yelp API, while the original POST request has not yet return the access token, the GET request will still execute. It will not wait for the access token. This is problematic since we do not have the access token, which means we will not have the proper authorization, and the request will return an error. This completes the coding portion of the guide. Now we are ready to see the results of making a request to the API.      
+  </p>
+</div>
+
+<div class="section">
+  <h2><a id = "Result">Results of the Request</a></h2>
+  <p>    
+    With everything in place, lets run node in the terminal. The file <code>yelp.js</code> is the javascript file I saved the program under. 
+  </p>  
+  <div>
+    <img src="How%20To%20Pics/run.PNG">
+  </div>
+  <p>    
+    Now the server is running, but we still need to make requests to it. To assist with requests we will be using <a href = "https://chrome.google.com/webstore/detail/postman/fhbjgbiflinjbdggehcddcbncdddomop?hl=en" target="_blank">POSTMAN</a>, which is an extension of the Chrome web browser. Now refering back to the API's documentation, the only parameter required in the query string is the location of where you want to search for businesses. This will return information for all businesses in the location you specified, however, if more than a 1000 business are found the request will produce an error. There is no good gauge on how to avoid this other than to be more specific by passing more parameters, or, to choose a location that does not have many businesses. A small snippet of the query string parameters is below.            
+  </p> 
+  <div>
+    <img src="How%20To%20Pics/querySpec.PNG">
+  </div>
+  <p>    
+    So now we are ready to make a request, and to avoid the pitfall mentioned above I am going to be specific. Let's say I am looking for food within a mile radius of Seattle, WA, and I don't care if it comes from a restaurant, food truck, cafe, ect. It's worth noting that the API will default to sorting businesses according to an alogirthm that determines if they are the best match for your request. That all sounds very vague, and I was unable to find an answer as to how that is implemented. With that knowledge I am going to ask the API to sort businesses according to thier ratings, and that I only want to see the top three results. Luckily using specific parameters I am able to make such a request!    
+  </p>
+  <div>
+    <img src="How%20To%20Pics/postman.PNG">
+  </div>
+  <p>    
+    Postman displays the JSON string it recieved from our server. It is hard to make sense of all the information, but the businesses it returned are underlined in red. The search returned <a href = "https://www.yelp.com/biz/le-caviste-seattle?adjust_creative=HClBjDHthASLk5Monr3lQw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=HClBjDHthASLk5Monr3lQw" target="_blank">Le Caviste</a>, a wine bar in downtown Seattle, <a href = "https://www.yelp.com/biz/cheese-wizards-food-truck-seattle?adjust_creative=HClBjDHthASLk5Monr3lQw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=HClBjDHthASLk5Monr3lQw" target="_blank"> Cheese Wizards Food Truck</a>, a food truck in Queen Anne, and <a href = "https://www.yelp.com/biz/tacos-chukis-seattle?adjust_creative=HClBjDHthASLk5Monr3lQw&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=HClBjDHthASLk5Monr3lQw" target="_blank"> Taco's Chukis</a>, a Mexican restaurant in Capitol Hill. Well that concludes the end of this How-To-Guide. Hopefully you have a better understanding of how to navigate Yelp API's, as well as, using Node.js to gather data from them!   
+  </p>    
+</div>
+
+<footer id = "footer">
+    <p>Author: Daniel Willson Trierweiler</p>
+    <p>Email: trierwed@oregonstate.edu</p>
+</footer>
+</body>
+</html>

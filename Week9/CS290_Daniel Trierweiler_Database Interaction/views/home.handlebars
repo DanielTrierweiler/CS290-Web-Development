@@ -1,0 +1,28 @@
+<form id="form">
+  <fieldset>
+    <legend>Add Exercise</legend>
+    Name: <input type="text" id="name"> <br>
+    Reps: <input type="text" id="reps"> <br>
+    Weight: <input type="text" id="weight"> <br>
+    LBS/KGS (1 = LBS, 0 = KGS): <input type="text" id="lbs"> <br> 
+    Date: (YYYY-MM-DD): <input type="text" id="date"> <br>
+    <input type="submit" id="add" value="Add">
+  </fieldset>
+</form>
+
+<table border="1px solid black">
+  <caption>Your Workout (Edits made inside table)</caption>
+  <tbody id="tableBody">
+    <tr>
+      <th>Exercise Name</th>
+      <th>Reps</th>
+      <th>Wieght</th>
+      <th>LBS</th>
+      <th>Date</th>
+    </tr>
+  </tbody>
+</table>
+
+<div>
+  <input type="submit" id="reset" value="Reset Table">
+</div>

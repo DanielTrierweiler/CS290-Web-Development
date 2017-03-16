@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <title>CS290 OpenWeather Activity</title>
+</head>
+<body>
+  <script src="script.js"></script>
+  <fieldset>
+    <legend> Get Weather </legend>
+    <form>
+      <fieldset>
+        City: <input id = "city" type = "text" />
+        <br>
+        Zip Code: <input id = "zip" type = "text" />
+        <br>
+        <input type = "submit" id = "Submit1">
+      </fieldset>
+    </form> 
+    <div>
+      <h3>Result</h3>
+      <ul>
+        <li> City: <span id = displayCity></span> </li>
+        <li> Temp: <span id = displayTemp></span> </li>
+        <li> Description: <span id = displayDescription></span> </li>
+      </ul> 
+    </div>
+  </fieldset>
+  <fieldset>
+    <legend> Send POST </legend>
+    <form>
+      <fieldset>
+        Type Something: <input id = "userText" type = "text" />
+        <br>
+        <input type = "submit" id = "Submit2">
+      </fieldset>
+    </form>   
+    <div>
+      <h3>Result</h3>
+      <ul>
+        <li> Sent: <span id = sent></span> </li>
+        <li> Response Data: <span id = data></span> </li>
+        <li> Full Response: <span id = response></span> </li>
+      </ul> 
+    </div>
+  </fieldset>
+</body>
+</html>
